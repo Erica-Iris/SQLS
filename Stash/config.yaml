@@ -107,12 +107,11 @@ proxy-providers:
 
 proxy-groups:
   # 功能分组
-  - name: 手动选择
+  - name: 选择
     icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Proxy.png
     type: select
     proxies:
       - 自动选择
-
       - HK 香港
       - TW 台湾
       - SG 新加坡
