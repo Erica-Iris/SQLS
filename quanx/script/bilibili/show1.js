@@ -8,14 +8,12 @@ if (obj?.data?.card_list) {
             return
         }
         if (item.card_type === "my_idol_v1") {
-            for (i in item.card_data.my_idol_v1) {
+            for (i in item.card_data.my_idol_v1.list) {
                 console.log(i.title)
             }
         }
         if (item.card_type === "small_card_v1") {
-            for (i in item.card_data.small_card_v1) {
-                console.log(i.title)
-            }
+            console.log(item.card_data.small_card_v1.title)
         }
     }
 }
