@@ -1,13 +1,10 @@
 const url = $request.url;
 if (!$response.body) $done({});
 let obj = JSON.parse($response.body);
-console.log("================begin===============")
+console.log("================begin===============\n")
 if (obj?.data?.card_list) {
     console.log(obj.data.card_list.length)
     for (item in obj.data.card_list) {
-        if (item.card_type === "area_entrance_v1") {
-            return
-        }
         if (item.card_type === "my_idol_v1") {
             for (i in item.card_data.my_idol_v1.list) {
                 console.log(i.title)
