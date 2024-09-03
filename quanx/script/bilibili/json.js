@@ -11,4 +11,5 @@ if (obj?.data?.interaction_list) {
     // }
     delete obj.data.interaction_list[0];
     delete obj.data.interaction_list[2];
+    console.log("234")
 }
