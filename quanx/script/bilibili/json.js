@@ -14,3 +14,4 @@ console.log("234")
 //     delete obj.data.interaction_list[2];
 // }
 delete obj.data.interaction_list;
+$done({ body: JSON.stringify(obj) });
