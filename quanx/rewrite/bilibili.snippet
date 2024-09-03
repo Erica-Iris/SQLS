@@ -20,4 +20,4 @@
 # 删除除了预言外的守护圣殿等没用东西
 ^https:\/\/api\.live\.bilibili\.com\/xlive\/app-ucenter\/v2\/livePanel\/tabs\? url script-response-body https://raw.githubusercontent.com/Erica-Iris/SQLS/main/quanx/script/bilibili/json.js
 # 设置默认码率
-(^https:\/\/api\.live\.bilibili\.com\/xlive\/app-room\/v2\/index\/getRoomPlayInfo\?.+)(qn=\d+)(&.+) url 307 $1&qn=10000$3
+(^https:\/\/api\.live\.bilibili\.com\/xlive\/app-room\/v2\/index\/getRoomPlayInfo\?.+)(qn=\d+)(&.+) url 302 $1$3&qn=10000
