@@ -3,7 +3,7 @@ if (!$response.body) $done({});
 let obj = JSON.parse($response.body);
 console.log("================begin===============")
 if (obj?.data?.card_list) {
-    console.log(length(obk.data.card_list))
+    console.log(obj.data.card_list.length)
     for (item in obj.data.card_list) {
         if (item.card_type === "area_entrance_v1") {
             return
