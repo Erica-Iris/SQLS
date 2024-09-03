@@ -22,3 +22,5 @@
 # 设置默认码率
 (^https:\/\/api\.live\.bilibili\.com\/xlive\/app-room\/v2\/index\/getRoomPlayInfo\?.+)(&qn=\d+)(&.+) url 302 $1$3&qn=20000
 
+# 解决从直播推荐页面进入会保存低分辨率的链接
+^https:\/\/api\.live\.bilibili\.com\/xlive\/app-interface\/v2\/room\/recList\? url script-response-body https://raw.githubusercontent.com/Erica-Iris/SQLS/main/quanx/script/bilibili/show.js
