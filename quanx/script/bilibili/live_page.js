@@ -5,6 +5,7 @@ let obj = JSON.parse($response.body);
 
 async function onResponse(body) {
     console.log("获取到: " + body.data.card_list.length + "条数据");
+    console.log(body);
     const qnDayColorMap = {
         80: "#FF6F61",
         150: "#FFA07A",
