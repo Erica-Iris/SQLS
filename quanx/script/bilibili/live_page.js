@@ -35,7 +35,7 @@ function filterCardsByCategory(data, categories) {
     });
 }
 // 进行过滤
-obj.data.card_list = filterCardsByCategory(data, categoriesToFilter);
+obj.data.card_list = filterCardsByCategory(obj.data, categoriesToFilter);
 
 obj.data.card_list.forEach(card => {
     if (card.card_data && card.card_data.small_card_v1) {
