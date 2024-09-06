@@ -135,9 +135,9 @@ function build_multi_view_data(userInfo) {
         "duration": 0,
         "gather_id": 0,
         "jump_url": `https://live.bilibili.com/${userInfo.roomID}`,
-        "live_status": 0,
+        "live_status": userInfo.liveStatus,
         "match_info": null,                 //展示赛事信息
-        "match_live_room": false,
+        "match_live_room": true,
         "num": 999999,                      //热度
         "order_id": userInfo.orderID,       //横着的列表中第几个
         "pub_date": "",
