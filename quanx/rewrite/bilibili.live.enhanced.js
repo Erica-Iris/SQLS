@@ -1,4 +1,4 @@
-const $ = new Env("B站直播间净化 v0.0.37");
+const $ = new Env("B站直播间净化 v0.0.38");
 // userInfo
 // {
 //     "face": body.data.info.face,
@@ -49,7 +49,7 @@ function GetUserInfo(uid) {
     reqs["url"] = url;
 
     return new Promise((resolve) => { //主函数返回Promise实例对象, 以便后续调用时可以实现顺序执行异步函数
-        $.post(userInfo, (error, resp, data) => { //使用post请求查询, 再使用回调函数处理返回的结果
+        $.post(reqs, (error, resp, data) => { //使用post请求查询, 再使用回调函数处理返回的结果
             try { //使用try方法捕获可能出现的代码异常
                 if (error) {
                     throw new Error(error); //如果请求失败, 例如无法联网, 则抛出一个异常
@@ -79,7 +79,7 @@ function GetLiveRoomTitleAndStatus(roomID) {
     let url = `https://api.live.bilibili.com/room/v1/Room/get_info?room_id=${roomID}`
     reqs["url"] = url
     return new Promise((resolve) => { //主函数返回Promise实例对象, 以便后续调用时可以实现顺序执行异步函数
-        $.post(userInfo, (error, resp, data) => { //使用post请求查询, 再使用回调函数处理返回的结果
+        $.post(reqs, (error, resp, data) => { //使用post请求查询, 再使用回调函数处理返回的结果
             try { //使用try方法捕获可能出现的代码异常
                 if (error) {
                     throw new Error(error); //如果请求失败, 例如无法联网, 则抛出一个异常
