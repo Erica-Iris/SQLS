@@ -45,8 +45,8 @@ const reqs = {
 }
 
 function GetUserInfo(uid) {
-    url = `https://api.live.bilibili.com/live_user/v1/Master/info?uid=${uid}`
-    reqs["url"] = url
+    let url = `https://api.live.bilibili.com/live_user/v1/Master/info?uid=${uid}`;
+    reqs["url"] = url;
 
     return new Promise((resolve) => { //主函数返回Promise实例对象, 以便后续调用时可以实现顺序执行异步函数
         $.post(userInfo, (error, resp, data) => { //使用post请求查询, 再使用回调函数处理返回的结果
@@ -76,7 +76,7 @@ function GetUserInfo(uid) {
     })
 }
 function GetLiveRoomTitleAndStatus(roomID) {
-    url = `https://api.live.bilibili.com/room/v1/Room/get_info?room_id=${roomID}`
+    let url = `https://api.live.bilibili.com/room/v1/Room/get_info?room_id=${roomID}`
     reqs.url = url
     return new Promise((resolve) => { //主函数返回Promise实例对象, 以便后续调用时可以实现顺序执行异步函数
         $.post(userInfo, (error, resp, data) => { //使用post请求查询, 再使用回调函数处理返回的结果
