@@ -1,33 +1,28 @@
 const $ = new Env("B站直播间净化 v0.0.37");
-// ```userInfo
-// roomID:xxxxxx,
-// uid:xxxxxx,
-// uname:xxxxxx,
-// face:http://xxxxx.jpg,
-// roomTitle:xxxxxx,
-// liveStatus,
-// orderID:123
+// userInfo
+// {
+//     "face": body.data.info.face,
+//     "uname": body.data.info.uname
+// }
 
 // roomInfo
 // {
-//     "up_name": body.data.description,
 //     "roomID": roomID,
-//     "live_status": body.data.live_status,
+//     "liveStatus": body.data.live_status,
 //     "uid": body.data.uid,
-//     "room_title": body.data.title
+//     "roomTitle": body.data.title
 // }
-// ```
-//     ```userInfo
+
+// cardInfo
 // {
-//     roomID:xxxxxx,
-//     uid:xxxxxx,
-//     uname:xxxxxx,
-//     face:http://xxxxx.jpg,
-//     roomTitle:xxxxxx,
-//     liveStatus,
-//     orderID:123
+//     "orderID": orderID,
+//     "roomID": roomInfo.roomID,
+//     "roomTitle": roomInfo.roomTitle,
+//     "liveStatus": roomInfo.liveStatus,
+//     "uid": roomInfo.uid,
+//     "face": userInfo.face,
+//     "uname": userInfo.uname,
 // }
-// ```
 
 function build_userInfo(roomInfo, userInfo, orderID) {
     return {
@@ -36,18 +31,22 @@ function build_userInfo(roomInfo, userInfo, orderID) {
         "roomTitle": roomInfo.roomTitle,
         "liveStatus": roomInfo.liveStatus,
         "uid": roomInfo.uid,
-        "uname": userInfo.uname,
         "face": userInfo.face,
+        "uname": userInfo.uname,
     }
 }
+
+const reqs = {
+    headers: {
+        'User-Agent': 'bili-inter/77500100 CFNetwork/1.0 Darwin/23.5.0 os/ios model/iPhone 13 mini mobi_app/iphone_i build/77500100 osVer/17.5.1 network/2 channel/AppStore'
+    },
+    method: "GET"
+}
+
 function GetUserInfo(uid) {
-    const userInfo = {
-        url: `https://api.live.bilibili.com/live_user/v1/Master/info?uid=${uid}`,
-        headers: {
-            'User-Agent': 'bili-inter/77500100 CFNetwork/1.0 Darwin/23.5.0 os/ios model/iPhone 13 mini mobi_app/iphone_i build/77500100 osVer/17.5.1 network/2 channel/AppStore'
-        },
-        method: "GET"
-    }
+    url = `https://api.live.bilibili.com/live_user/v1/Master/info?uid=${uid}`
+    reqs.url = url
+
     return new Promise((resolve) => { //主函数返回Promise实例对象, 以便后续调用时可以实现顺序执行异步函数
         $.post(userInfo, (error, resp, data) => { //使用post请求查询, 再使用回调函数处理返回的结果
             try { //使用try方法捕获可能出现的代码异常
@@ -65,21 +64,19 @@ function GetUserInfo(uid) {
                     }
                 }
             } catch (e) { //接住try代码块中抛出的异常, 并打印日志
-                console.log(`\n获取头像: 失败\n出现错误: ${e.message}`);
-            } finally { //finally语句在try和catch之后无论有无异常都会执行
-                resolve(face); //异步操作成功时调用, 将Promise对象的状态标记为"成功", 表示已完成查询积分
+                console.log(`\n获取用户出现错误: ${e.message}`);
+            } finally {
+                resolve({
+                    "face": "",
+                    "uname": "获取失败"
+                });
             }
         })
     })
 }
 function GetLiveRoomTitleAndStatus(roomID) {
-    const userInfo = {
-        url: `https://api.live.bilibili.com/room/v1/Room/get_info?room_id=${roomID}`,
-        headers: {
-            'User-Agent': 'bili-inter/77500100 CFNetwork/1.0 Darwin/23.5.0 os/ios model/iPhone 13 mini mobi_app/iphone_i build/77500100 osVer/17.5.1 network/2 channel/AppStore'
-        },
-        method: "GET"
-    }
+    url = `https://api.live.bilibili.com/room/v1/Room/get_info?room_id=${roomID}`
+    reqs.url = url
     return new Promise((resolve) => { //主函数返回Promise实例对象, 以便后续调用时可以实现顺序执行异步函数
         $.post(userInfo, (error, resp, data) => { //使用post请求查询, 再使用回调函数处理返回的结果
             try { //使用try方法捕获可能出现的代码异常
@@ -98,14 +95,14 @@ function GetLiveRoomTitleAndStatus(roomID) {
                         throw new Error(body.msg || data);
                     }
                 }
-            } catch (e) { //接住try代码块中抛出的异常, 并打印日志
+            } catch (e) {
                 console.log(`\n获取直播间信息失败\n出现错误: ${e.message}`);
-            } finally { //finally语句在try和catch之后无论有无异常都会执行
+            } finally {
                 resolve({
-                    "up_name": "获取失败",
-                    "live_status": 0,
+                    "roomID": 0,
+                    "liveStatus": 0,
                     "uid": 0,
-                    "room_title": "获取失败"
+                    "roomTitle": "获取失败"
                 });
             }
         })
@@ -119,7 +116,7 @@ const base_multi_view = {
     "relation_view": [
 
     ],
-    "room_id": 12812111,
+    // "room_id": 12812111,
     "room_list": [],//作用未知
     "sub_bg_color": "#9c9c9c1d",
     "sub_slt_color": "#ffffff22",
@@ -177,17 +174,6 @@ function build_multi_view_data(userInfo) {
 
 
     o.data.multi_view_info = base_multi_view
-
-    // switch (firstUser.liveStatus) {
-    //     case 1:
-    //         $.log(`\n${firstUser.uname} 正在直播,\n主播UID: ${firstUser.uid}\n主播房间标题: ${firstUser.roomTitle},\n主播头像: ${firstUser.face}`);
-    //         break;
-    //     case 0:
-    //     default:
-    //         $.log(`\n${firstUser.uname} 未开播,\n主播UID: ${firstUser.uid}\n主播房间标题: ${firstUser.roomTitle},\n主播头像: ${firstUser.face}`);
-    //         break;
-    // }
-
 
     $.done({ body: JSON.stringify(o) }) //完成后调用QX内部特有的函数, 用于退出脚本执行
 })()
