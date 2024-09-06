@@ -1,94 +1,95 @@
 const $ = new Env("B站直播间净化");
-const url = $request.url;
-if (!$response.body) $done({});
-let obj = JSON.parse($response.body);
-p = new (
-    class {
-        constructor(url, fallbackUrl = void 0) {
-            console.log("\n🟧 URL v2.1.0\n");
-            url = this.#parseUrl(url, fallbackUrl);
-            return this;
-        }
+// const url = $request.url;
+// if (!$response.body) $done({});
+// let obj = JSON.parse($response.body);
+// p = new (
+//     class {
+//         constructor(url, fallbackUrl = void 0) {
+//             console.log("\n🟧 URL v2.1.0\n");
+//             url = this.#parseUrl(url, fallbackUrl);
+//             return this;
+//         }
 
-        #parseUrl(url, fallbackUrl = void 0) {
-            const urlPattern = /(?:(?<protocol>\w+:)\/\/(?:(?<username>[^\s:"]+)(?::(?<password>[^\s:"]+))?@)?(?<host>[^\s@/]+))?(?<pathname>\/?[^\s@?]+)?(?<search>\?[^\s?]+)?/;
-            const hostPattern = /(?<hostname>.+):(?<port>\d+)$/;
+//         #parseUrl(url, fallbackUrl = void 0) {
+//             const urlPattern = /(?:(?<protocol>\w+:)\/\/(?:(?<username>[^\s:"]+)(?::(?<password>[^\s:"]+))?@)?(?<host>[^\s@/]+))?(?<pathname>\/?[^\s@?]+)?(?<search>\?[^\s?]+)?/;
+//             const hostPattern = /(?<hostname>.+):(?<port>\d+)$/;
 
-            url = url.match(urlPattern)?.groups || {};
-            if (fallbackUrl) {
-                fallbackUrl = fallbackUrl.match(urlPattern)?.groups || {};
-                if (!fallbackUrl.protocol || !fallbackUrl.hostname) {
-                    throw new Error(`🚨 ${name}, ${fallbackUrl} is not a valid URL`);
-                }
-            }
+//             url = url.match(urlPattern)?.groups || {};
+//             if (fallbackUrl) {
+//                 fallbackUrl = fallbackUrl.match(urlPattern)?.groups || {};
+//                 if (!fallbackUrl.protocol || !fallbackUrl.hostname) {
+//                     throw new Error(`🚨 ${name}, ${fallbackUrl} is not a valid URL`);
+//                 }
+//             }
 
-            this.protocol = url.protocol || fallbackUrl?.protocol;
-            this.username = url.username || fallbackUrl?.username;
-            this.password = url.password || fallbackUrl?.password;
-            this.host = url.host || fallbackUrl?.host;
+//             this.protocol = url.protocol || fallbackUrl?.protocol;
+//             this.username = url.username || fallbackUrl?.username;
+//             this.password = url.password || fallbackUrl?.password;
+//             this.host = url.host || fallbackUrl?.host;
 
-            if (this.host) {
-                Object.freeze(this.host);
-                this.hostname = this.host.match(hostPattern)?.groups.hostname ?? this.host;
-                this.port = this.host.match(hostPattern)?.groups.port ?? "";
-            }
+//             if (this.host) {
+//                 Object.freeze(this.host);
+//                 this.hostname = this.host.match(hostPattern)?.groups.hostname ?? this.host;
+//                 this.port = this.host.match(hostPattern)?.groups.port ?? "";
+//             }
 
-            this.pathname = url.pathname || fallbackUrl?.pathname || "";
-            if (this.pathname) {
-                if (!this.pathname.startsWith("/")) {
-                    this.pathname = "/" + this.pathname;
-                }
-                this.paths = this.pathname.split("/").filter(Boolean);
-                Object.freeze(this.paths);
+//             this.pathname = url.pathname || fallbackUrl?.pathname || "";
+//             if (this.pathname) {
+//                 if (!this.pathname.startsWith("/")) {
+//                     this.pathname = "/" + this.pathname;
+//                 }
+//                 this.paths = this.pathname.split("/").filter(Boolean);
+//                 Object.freeze(this.paths);
 
-                const lastPath = this.paths[this.paths.length - 1];
-                if (lastPath?.includes(".")) {
-                    const parts = lastPath.split(".");
-                    this.format = parts[parts.length - 1];
-                    Object.freeze(this.format);
-                }
-            }
+//                 const lastPath = this.paths[this.paths.length - 1];
+//                 if (lastPath?.includes(".")) {
+//                     const parts = lastPath.split(".");
+//                     this.format = parts[parts.length - 1];
+//                     Object.freeze(this.format);
+//                 }
+//             }
 
-            this.search = url.search || fallbackUrl?.search || "";
-            if (this.search) {
-                Object.freeze(this.search);
-                const searchParamsArray = this.search.slice(1).split("&").map(param => param.split("="));
-                this.searchParams = new Map(searchParamsArray);
-            }
+//             this.search = url.search || fallbackUrl?.search || "";
+//             if (this.search) {
+//                 Object.freeze(this.search);
+//                 const searchParamsArray = this.search.slice(1).split("&").map(param => param.split("="));
+//                 this.searchParams = new Map(searchParamsArray);
+//             }
 
-            this.harf = this.toString();
-            Object.freeze(this.harf);
-            return this;
-        }
+//             this.harf = this.toString();
+//             Object.freeze(this.harf);
+//             return this;
+//         }
 
-        toString() {
-            let urlString = "";
-            if (this.protocol) urlString += this.protocol + "//";
-            if (this.username) urlString += this.username + (this.password ? ":" + this.password : "") + "@";
-            if (this.hostname) urlString += this.hostname;
-            if (this.port) urlString += ":" + this.port;
-            if (this.pathname) urlString += this.pathname;
-            if (this.searchParams) {
-                urlString += "?" + Array.from(this.searchParams).map(param => param.join("=")).join("&");
-            }
-            return urlString;
-        }
+//         toString() {
+//             let urlString = "";
+//             if (this.protocol) urlString += this.protocol + "//";
+//             if (this.username) urlString += this.username + (this.password ? ":" + this.password : "") + "@";
+//             if (this.hostname) urlString += this.hostname;
+//             if (this.port) urlString += ":" + this.port;
+//             if (this.pathname) urlString += this.pathname;
+//             if (this.searchParams) {
+//                 urlString += "?" + Array.from(this.searchParams).map(param => param.join("=")).join("&");
+//             }
+//             return urlString;
+//         }
 
-        toJSON() {
-            return JSON.stringify({ ...this });
-        }
-    }
-)($request.url);
+//         toJSON() {
+//             return JSON.stringify({ ...this });
+//         }
+//     }
+// )($request.url);
 
 obj.data.anchor_info.base_info.face = "https://i0.hdslb.com/bfs/face/74093455b9c833f87ee1c4f2a086923a5a3eed55.jpg";
 
 const requestParams = {
     url: 'https://api.bilibili.com/x/web-interface/card?photo=true&mid=686127',
     headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
-    }
+        'User-Agent': 'bili-inter/77500100 CFNetwork/1.0 Darwin/23.5.0 os/ios model/iPhone 13 mini mobi_app/iphone_i build/77500100 osVer/17.5.1 network/2 channel/AppStore'
+    },
+    method: "GET"
 };
-$.get(requestParams, (err, resp, body) => {
+$.post(requestParams, (err, resp, body) => {
     if (err) {
         console.error('请求失败:', err);
     } else {
@@ -98,7 +99,7 @@ $.get(requestParams, (err, resp, body) => {
     }
 });
 
-$done({ body: JSON.stringify(obj) });
+$.done($response);
 
 function Env(name, opts) {
     class Http {
