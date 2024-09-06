@@ -1,0 +1,33 @@
+{
+    "id": "iris.app.test.sub",
+    "name": "test_boxjs",
+    "description": "测试一下如何使用boxjs配置quanx的重写",
+    "author": "@iris",
+    "icon": "",
+    "repo": "https://github.com/Erica-Iris/SQLS",
+    "onInstall": {
+        "title": "安装确认",
+        "message": "本订阅包含重写资源, 是否需要自动安装?",
+        "install": {
+            "QuanX": "quantumult-x:///add-resource?remote-resource=%7B%22rewrite_remote%22%3A%5B%22https%3A%2F%2Fraw.githubusercontent.com%2FErica-Iris%2FSQLS%2Fmain%2Fquanx%2Frewrite%2Fbilibili.snippet%2Ctag%3Dboxjs%22%5D%7D"
+        }
+    },
+    "apps": [
+        {
+            "id": "BiliLive",
+            "name": "Bilibili Live Enhanced",
+            "keys": [
+                "BiliBili.Live.Enhanced.Settings"
+            ],
+            "descs_html": [
+                "<h4 align=\"center\">Bilibili Live Enhanced</h4>"
+            ],
+            "author": "@IrisW",
+            "repo": "https://raw.githubusercontent.com/Erica-Iris/SQLS",
+            "icons": [
+                "https://raw.githubusercontent.com/NobyDa/mini/master/Alpha/manga.png",
+                "https://raw.githubusercontent.com/NobyDa/mini/master/Color/manga.png"
+            ]
+        }
+    ]
+}
