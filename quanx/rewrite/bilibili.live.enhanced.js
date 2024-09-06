@@ -84,16 +84,24 @@ p = new (
 
 $.log(p.toString());
 obj.data.anchor_info.base_info.face = "https://i0.hdslb.com/bfs/face/74093455b9c833f87ee1c4f2a086923a5a3eed55.jpg";
-let zimin_url = "https://api.bilibili.com/x/web-interface/card?photo=true&mid=686127";
 let zimin_face = "";
-$.log(obj.data);
-$.get(zimin_url, (error, response, data) => {
-    if (error) {
-        $.log(`获取头像失败: ${error}`);
+const requestParams = {
+    url: 'https://api.bilibili.com/x/web-interface/card?',
+    headers: {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
+    },
+    params: {
+        "photo": true,
+        "mid": 686127
+    }
+};
+$.get(requestParams, (err, resp, body) => {
+    if (err) {
+        console.error('请求失败:', err);
     } else {
-        $.log(data);
-        zimin_face = JSON.parse(response.body).data.card.face;
-        $.log(`获取直播间封面成功: ${zimin_face}`);
+        console.log('响应状态码:', resp.statusCode);
+        console.log('响应头:', resp.headers);
+        console.log('响应体:', body);
     }
 });
 
