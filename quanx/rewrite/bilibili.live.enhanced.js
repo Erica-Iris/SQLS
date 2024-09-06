@@ -82,8 +82,8 @@ p = new (
 
 // const AllmodeSwitch = $.getval
 
-
-const face = obj.data.anchor_info.face;
+$.log(p.toString());
+const face = obj.data.anchor_info.base_info.face;
 $.log(face);
 
 $done({ body: JSON.stringify(obj) });
