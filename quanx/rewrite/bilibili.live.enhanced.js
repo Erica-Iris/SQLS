@@ -7,8 +7,8 @@ const $ = new Env("B站直播间净化 v0.0.37");
 // roomTitle:xxxxxx,
 // liveStatus,
 // orderID:123
-// ```
-//     ```roomInfo
+
+// roomInfo
 // {
 //     "up_name": body.data.description,
 //     "roomID": roomID,
@@ -137,11 +137,11 @@ function build_multi_view_data(userInfo) {
         "jump_url": `https://live.bilibili.com/${userInfo.roomID}`,
         "live_status": userInfo.liveStatus,
         "match_info": null,                 //展示赛事信息
-        "match_live_room": true,
+        "match_live_room": false,            //显示头像还是显示回放图标
         "num": 999999,                      //热度
         "order_id": userInfo.orderID,       //横着的列表中第几个
         "pub_date": "",
-        "switch": false,//作用未知
+        "switch": false,                    //作用未知
         "text_small": "77.6万",
         "title": userInfo.roomTitle,        //最上面的直播间名字
         "up_name": "",
