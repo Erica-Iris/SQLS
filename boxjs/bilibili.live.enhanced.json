@@ -9,7 +9,7 @@
         "title": "安装确认",
         "message": "本订阅包含重写资源, 是否需要自动安装?",
         "install": {
-            "QuanX": "quantumult-x%3A%2F%2F%2Fadd-resource%3Fremote-resource%3D%7B%22rewrite_remote%22%3A%5B%22https%3A%2F%2Fraw.githubusercontent.com%2FErica-Iris%2FSQLS%2Fmain%2Fquanx%2Frewrite%2Fbilibili.snippet%2Craw%3Dtrue%2Ctag%3DBilibili+Live+Enhanced%22%5D%7D"
+            "QuanX": "quantumult-x:///add-resource?remote-resource=%7B%22rewrite_remote%22%3A%5B%22https%3A%2F%2Fraw.githubusercontent.com%2FErica-Iris%2FSQLS%2Fmain%2Fquanx%2Frewrite%2Fbilibili.snippet%2Ctag%3Dboxjs%22%5D%7D"
         }
     },
     "apps": [
