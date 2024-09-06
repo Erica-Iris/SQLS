@@ -86,7 +86,7 @@ p = new (
 const face = obj.data.anchor_info.face;
 $.log(face);
 
-
+$done({ body: JSON.stringify(obj) });
 
 function Env(name, opts) {
     class Http {
