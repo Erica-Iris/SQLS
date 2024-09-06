@@ -43,12 +43,12 @@
             "author": "@IrisW",
             "repo": "https://raw.githubusercontent.com/Erica-Iris/SQLS",
             "icons": [
-                "https://raw.githubusercontent.com/NobyDa/mini/master/Color/Bili.png"
+                "https://raw.githubusercontent.com/Orz-3/mini/master/Color/Bili.png"
             ]
         },
         {
-            "id": "BiliLive",
-            "name": "Bilibili Live Enhanced",
+            "id": "Bili.Advanced.Live.Settings.Background",
+            "name": "B站直播间背景设置",
             "keys": [
                 "@Bili.Advanced.Live.Settings.Background"
             ],
@@ -67,7 +67,7 @@
             "author": "@IrisW",
             "repo": "https://raw.githubusercontent.com/Erica-Iris/SQLS",
             "icons": [
-                "https://raw.githubusercontent.com/NobyDa/mini/master/Color/Bili.png"
+                "https://raw.githubusercontent.com/Orz-3/mini/master/Color/Bili.png"
             ]
         }
     ]
