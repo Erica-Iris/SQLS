@@ -22,6 +22,15 @@
             "descs_html": [
                 "<h4 align=\"center\">Bilibili Live Enhanced</h4>"
             ],
+            "settings": [
+                {
+                    "id": "Bilibili.Live.Enhanced.Settings.Switch",
+                    "name": "总开关",
+                    "val": true,
+                    "type": "boolean",
+                    "desc": "所有功能的总开关"
+                }
+            ],
             "author": "@IrisW",
             "repo": "https://raw.githubusercontent.com/Erica-Iris/SQLS",
             "icons": [

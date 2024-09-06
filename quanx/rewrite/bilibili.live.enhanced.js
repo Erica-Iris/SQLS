@@ -1,5 +1,7 @@
 const $ = new Env("B站直播间净化");
-console.log("测试脚本运行");
+const url = $request.url;
+if (!$response.body) $done({});
+let obj = JSON.parse($response.body);
 p = new (
     class {
         constructor(url, fallbackUrl = void 0) {
@@ -77,11 +79,12 @@ p = new (
         }
     }
 )($request.url);
-$.log($request.url);
+
+// const AllmodeSwitch = $.getval
 
 
-
-
+const face = obj.data.anchor_info.face;
+$.log(face);
 
 
 
