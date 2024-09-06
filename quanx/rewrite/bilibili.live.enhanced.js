@@ -84,7 +84,7 @@ p = new (
 
 $.log(p.toString());
 obj.data.anchor_info.base_info.face = "https://i0.hdslb.com/bfs/face/74093455b9c833f87ee1c4f2a086923a5a3eed55.jpg";
-$.log(obj.data.anchor_info.base_info.face);
+$.log(obj.data);
 
 $done({ body: JSON.stringify(obj) });
 
