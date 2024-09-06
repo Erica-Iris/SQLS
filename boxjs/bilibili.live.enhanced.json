@@ -17,18 +17,27 @@
             "id": "BiliLive",
             "name": "Bilibili Live Enhanced",
             "keys": [
-                "BiliBili.Live.Enhanced.Settings"
+                "BiliBili.Live.Enhanced.Settings",
+                "firstID",
+                "secID"
             ],
             "descs_html": [
                 "<h4 align=\"center\">Bilibili Live Enhanced</h4>"
             ],
             "settings": [
                 {
-                    "id": "Bilibili.Live.Enhanced.Settings.Switch",
-                    "name": "总开关",
-                    "val": true,
-                    "type": "boolean",
-                    "desc": "所有功能的总开关"
+                    "id": "firstID",
+                    "name": "关联的第一个ID",
+                    "val": "",
+                    "type": "text",
+                    "desc": "请输入需要关联的第一个ID"
+                },
+                {
+                    "id": "secID",
+                    "name": "关联的第二个ID",
+                    "val": "",
+                    "type": "text",
+                    "desc": "请输入需要关联的第二个ID"
                 }
             ],
             "author": "@IrisW",
