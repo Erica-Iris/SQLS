@@ -37,6 +37,7 @@ function build_userInfo(roomInfo, userInfo, orderID) {
 }
 
 const reqs = {
+    url: "",
     headers: {
         'User-Agent': 'bili-inter/77500100 CFNetwork/1.0 Darwin/23.5.0 os/ios model/iPhone 13 mini mobi_app/iphone_i build/77500100 osVer/17.5.1 network/2 channel/AppStore'
     },
@@ -45,7 +46,7 @@ const reqs = {
 
 function GetUserInfo(uid) {
     url = `https://api.live.bilibili.com/live_user/v1/Master/info?uid=${uid}`
-    reqs.url = url
+    reqs["url"] = url
 
     return new Promise((resolve) => { //主函数返回Promise实例对象, 以便后续调用时可以实现顺序执行异步函数
         $.post(userInfo, (error, resp, data) => { //使用post请求查询, 再使用回调函数处理返回的结果
