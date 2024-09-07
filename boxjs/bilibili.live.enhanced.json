@@ -14,26 +14,24 @@
     },
     "apps": [
         {
-            "id": "BiliLive",
+            "id": "Bili.Advanced.Live",
             "name": "Bilibili Live Enhanced",
             "keys": [
-                "BiliBili.Live.Enhanced.Settings",
-                "firstID",
-                "secID"
+                "@Bili.Advanced.Live.card"
             ],
             "descs_html": [
                 "<h4 align=\"center\">Bilibili Live Enhanced</h4>"
             ],
             "settings": [
                 {
-                    "id": "firstID",
+                    "id": "@Bili.Advanced.Live.card.firstID",
                     "name": "关联的第一个ID",
                     "val": "",
                     "type": "text",
                     "desc": "请输入需要关联的第一个ID"
                 },
                 {
-                    "id": "secID",
+                    "id": "@Bili.Advanced.Live.card.secID",
                     "name": "关联的第二个ID",
                     "val": "",
                     "type": "text",
