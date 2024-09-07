@@ -1,13 +1,13 @@
 {
-    "id": "iris.app.test.sub",
-    "name": "test_boxjs",
-    "description": "测试一下如何使用boxjs配置quanx的重写",
+    "id": "iris.app.Bili.Advanced",
+    "name": "Bili Advanced",
+    "description": "提供更多自定义的功能",
     "author": "@iris",
     "icon": "",
     "repo": "https://github.com/Erica-Iris/SQLS",
     "onInstall": {
         "title": "安装确认",
-        "message": "本订阅包含重写资源, 是否需要自动安装?",
+        "message": "本订阅包含quanx重写资源, 是否需要自动安装?",
         "install": {
             "QuanX": "quantumult-x:///add-resource?remote-resource=%7B%22rewrite_remote%22%3A%5B%22https%3A%2F%2Fraw.githubusercontent.com%2FErica-Iris%2FSQLS%2Fmain%2Fquanx%2Frewrite%2Fbilibili.snippet%2Ctag%3DBilibiliLive%22%5D%7D"
         }
@@ -66,10 +66,30 @@
                 },
                 {
                     "id": "@Bili.Advanced.Live.Settings.MoreLive",
-                    "name": "开关更多直播按钮",
+                    "name": "关闭更多直播按钮",
                     "val": "",
                     "type": "boolean",
-                    "desc": "是否打开更多直播按钮"
+                    "desc": "是否关闭更多直播按钮"
+                },
+                {
+                    "id": "@BiliBili.Enhanced.Settings.Home.Tab",
+                    "name": "首页: 标签页",
+                    "val": [
+                        "关闭更多直播",
+                        "关闭礼物按钮"
+                    ],
+                    "type": "checkboxes",
+                    "items": [
+                        {
+                            "key": "关闭更多直播",
+                            "label": "直播按钮"
+                        },
+                        {
+                            "key": "关闭礼物按钮",
+                            "label": "礼物按钮"
+                        }
+                    ],
+                    "desc": "功能开关"
                 }
             ],
             "author": "@IrisW",
