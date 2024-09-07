@@ -3,7 +3,7 @@
     "name": "Bili Advanced",
     "description": "提供更多自定义的功能",
     "author": "@iris",
-    "icon": "",
+    "icon": "https://raw.githubusercontent.com/Orz-3/mini/master/Color/Bili.png",
     "repo": "https://github.com/Erica-Iris/SQLS",
     "onInstall": {
         "title": "安装确认",
@@ -50,8 +50,8 @@
             "id": "Bili.Advanced.Live.Settings",
             "name": "B站直播间设置",
             "keys": [
-                "@Bili.Advanced.Live.Settings.Background",
-                "@Bili.Advanced.Live.Settings.MoreLive"
+                "@Bili.Advanced.Live.Settings",
+                "@Bili.Advanced.Live.Cache"
             ],
             "descs_html": [
                 "<h4 align=\"center\">直播间设置</h4>"
@@ -82,7 +82,7 @@
                     "items": [
                         {
                             "key": "关闭更多直播",
-                            "label": "直播按钮"
+                            "label": "更多直播按钮"
                         },
                         {
                             "key": "关闭礼物按钮",
