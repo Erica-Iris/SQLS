@@ -1,28 +1,5 @@
-const $ = new Env("B站直播间净化 v0.0.38");
-// userInfo
-// {
-//     "face": body.data.info.face,
-//     "uname": body.data.info.uname
-// }
+const $ = new Env("B站直播间净化 v0.0.66");
 
-// roomInfo
-// {
-//     "roomID": roomID,
-//     "liveStatus": body.data.live_status,
-//     "uid": body.data.uid,
-//     "roomTitle": body.data.title
-// }
-
-// cardInfo
-// {
-//     "orderID": orderID,
-//     "roomID": roomInfo.roomID,
-//     "roomTitle": roomInfo.roomTitle,
-//     "liveStatus": roomInfo.liveStatus,
-//     "uid": roomInfo.uid,
-//     "face": userInfo.face,
-//     "uname": userInfo.uname,
-// }
 
 function build_userInfo(roomInfo, userInfo, orderID) {
     return {
@@ -31,31 +8,26 @@ function build_userInfo(roomInfo, userInfo, orderID) {
         "roomTitle": roomInfo.roomTitle,
         "liveStatus": roomInfo.liveStatus,
         "uid": roomInfo.uid,
-        "face": userInfo.face,
         "uname": userInfo.uname,
+        "face": userInfo.face,
     }
 }
-
-const reqs = {
-    url: "",
-    headers: {
-        'User-Agent': 'bili-inter/77500100 CFNetwork/1.0 Darwin/23.5.0 os/ios model/iPhone 13 mini mobi_app/iphone_i build/77500100 osVer/17.5.1 network/2 channel/AppStore'
-    },
-    method: "GET"
-}
-
 function GetUserInfo(uid) {
-    let url = `https://api.live.bilibili.com/live_user/v1/Master/info?uid=${uid}`;
-    reqs["url"] = url;
-
+    const userInfo = {
+        url: `https://api.live.bilibili.com/live_user/v1/Master/info?uid=${uid}`,
+        headers: {
+            'User-Agent': 'bili-inter/77500100 CFNetwork/1.0 Darwin/23.5.0 os/ios model/iPhone 13 mini mobi_app/iphone_i build/77500100 osVer/17.5.1 network/2 channel/AppStore'
+        },
+        method: "GET"
+    }
     return new Promise((resolve) => { //主函数返回Promise实例对象, 以便后续调用时可以实现顺序执行异步函数
-        $.post(reqs, (error, resp, data) => { //使用post请求查询, 再使用回调函数处理返回的结果
+        $.post(userInfo, (error, resp, data) => { //使用post请求查询, 再使用回调函数处理返回的结果
             try { //使用try方法捕获可能出现的代码异常
                 if (error) {
                     throw new Error(error); //如果请求失败, 例如无法联网, 则抛出一个异常
                 } else {
                     const body = JSON.parse(data); //解析响应体json并转化为对象
-                    if (body.code == 0 && body.data) { //如果响应体为预期格式
+                    if (body.code === 0 && body.data) { //如果响应体为预期格式
                         return resolve({
                             "face": body.data.info.face,
                             "uname": body.data.info.uname
@@ -65,21 +37,23 @@ function GetUserInfo(uid) {
                     }
                 }
             } catch (e) { //接住try代码块中抛出的异常, 并打印日志
-                console.log(`\n获取用户出现错误: ${e.message}`);
-            } finally {
-                resolve({
-                    "face": "",
-                    "uname": "获取失败"
-                });
+                console.log(`\n获取头像: 失败\n出现错误: ${e.message}`);
+            } finally { //finally语句在try和catch之后无论有无异常都会执行
+                resolve(face); //异步操作成功时调用, 将Promise对象的状态标记为"成功", 表示已完成查询积分
             }
         })
     })
 }
 function GetLiveRoomTitleAndStatus(roomID) {
-    let url = `https://api.live.bilibili.com/room/v1/Room/get_info?room_id=${roomID}`
-    reqs["url"] = url
+    const userInfo = {
+        url: `https://api.live.bilibili.com/room/v1/Room/get_info?room_id=${roomID}`,
+        headers: {
+            'User-Agent': 'bili-inter/77500100 CFNetwork/1.0 Darwin/23.5.0 os/ios model/iPhone 13 mini mobi_app/iphone_i build/77500100 osVer/17.5.1 network/2 channel/AppStore'
+        },
+        method: "GET"
+    }
     return new Promise((resolve) => { //主函数返回Promise实例对象, 以便后续调用时可以实现顺序执行异步函数
-        $.post(reqs, (error, resp, data) => { //使用post请求查询, 再使用回调函数处理返回的结果
+        $.post(userInfo, (error, resp, data) => { //使用post请求查询, 再使用回调函数处理返回的结果
             try { //使用try方法捕获可能出现的代码异常
                 if (error) {
                     throw new Error(error); //如果请求失败, 例如无法联网, 则抛出一个异常
@@ -96,14 +70,14 @@ function GetLiveRoomTitleAndStatus(roomID) {
                         throw new Error(body.msg || data);
                     }
                 }
-            } catch (e) {
+            } catch (e) { //接住try代码块中抛出的异常, 并打印日志
                 console.log(`\n获取直播间信息失败\n出现错误: ${e.message}`);
-            } finally {
+            } finally { //finally语句在try和catch之后无论有无异常都会执行
                 resolve({
-                    "roomID": 0,
-                    "liveStatus": 0,
+                    "up_name": "获取失败",
+                    "live_status": 0,
                     "uid": 0,
-                    "roomTitle": "获取失败"
+                    "room_title": "获取失败"
                 });
             }
         })
@@ -117,7 +91,7 @@ const base_multi_view = {
     "relation_view": [
 
     ],
-    // "room_id": 12812111,
+    "room_id": 12812111,
     "room_list": [],//作用未知
     "sub_bg_color": "#9c9c9c1d",
     "sub_slt_color": "#ffffff22",
@@ -127,7 +101,7 @@ const base_multi_view = {
     "view_type": 1
 }
 function build_multi_view_data(userInfo) {
-    let singleCard = {
+    return {
         "anchor_face": userInfo.face,
         "cover": "",
         "duration": 0,
@@ -135,12 +109,12 @@ function build_multi_view_data(userInfo) {
         "jump_url": `https://live.bilibili.com/${userInfo.roomID}`,
         "live_status": userInfo.liveStatus,
         "match_info": null,                 //展示赛事信息
-        "match_live_room": false,            //显示头像还是显示回放图标
+        "match_live_room": false,
         "num": 999999,                      //热度
         "order_id": userInfo.orderID,       //横着的列表中第几个
         "pub_date": "",
-        "switch": false,                    //作用未知
-        "text_small": "77.6万",
+        "switch": false,//作用未知
+        "text_small": "99.9万",
         "title": userInfo.roomTitle,        //最上面的直播间名字
         "up_name": "",
         "use_view_vt": false,               //竖屏直播
@@ -149,34 +123,62 @@ function build_multi_view_data(userInfo) {
         "view_type": 0,                     //0是直播间，1是精彩合集
         "watch_icon": "https://i0.hdslb.com/bfs/live/0b265af1af0a77abc47aa3b8f1a5c0769d8bd23b.png"
     }
-    return singleCard;
 }
 
 
 (async function () { // 立即运行的匿名异步函数
     // 使用await关键字声明, 表示以同步方式执行异步函数, 可以简单理解为顺序执行
 
-    let o = JSON.parse($response.body)
-    let firstID = $.getdata("firstID")
-    let secID = $.getdata("secID")
-
-    let a = await GetLiveRoomTitleAndStatus(firstID)
-    let b = await GetUserInfo(a.uid)
-    firstUser = build_userInfo(a, b, 1)
-
-    let c = await GetLiveRoomTitleAndStatus(secID)
-    let d = await GetUserInfo(c.uid)
-    secUser = build_userInfo(c, d, 2)
-
-    let firstCard = build_multi_view_data(firstUser)
-    let secCard = build_multi_view_data(secUser)
-    base_multi_view.relation_view.push(firstCard)
-    base_multi_view.relation_view.push(secCard)
+    let respBody = JSON.parse($response.body)
+    // 获取数据和设置以及缓存的数据
+    const card = $.getdata("@Bili.Advanced.Live.card")
+    const cached_user_info = $.getdata("@Bili.Advanced.Live.card.Caches")
 
 
-    o.data.multi_view_info = base_multi_view
+    const firstID = card.firstID
+    const secID = card.secID
+    $.log("获取到", firstID, secID)
 
-    $.done({ body: JSON.stringify(o) }) //完成后调用QX内部特有的函数, 用于退出脚本执行
+    let firstUser = {}
+    let secUser = {}
+
+    cached_user_info.users.forEach(user => {
+        $.log(user.roomID)
+    })
+
+    $.log(firstUser == {})
+    $.log(secUser == {})
+
+
+    // let a = await GetLiveRoomTitleAndStatus(firstID)
+    // let b = await GetUserInfo(a.uid)
+    // const firstUser = build_userInfo(a, b, 1)
+    //
+    // let c = await GetLiveRoomTitleAndStatus(secID)
+    // let d = await GetUserInfo(c.uid)
+    // const secUser = build_userInfo(c, d, 2)
+    //
+    // let firstCard = build_multi_view_data(firstUser)
+    // let secCard = build_multi_view_data(secUser)
+    // base_multi_view.relation_view.push(firstCard)
+    // base_multi_view.relation_view.push(secCard)
+    //
+    //
+    // // 设置多视图信息
+    // respBody.data.multi_view_info = base_multi_view
+    //
+    // // 在获取到背景图片地址后进行后续操作
+    // if (background_image_url) {
+    //     respBody.data.room_info.app_background = background_image_url
+    // } else {
+    //     $.log("未获取到背景图片地址")
+    // }
+    //
+    // if (moreliveSwitch) {
+    //     respBody.data.more_live_tag.is_show = false
+    // }
+    // $.log(moreliveSwitch)
+    $.done({ body: JSON.stringify(respBody) }) //完成后调用QX内部特有的函数, 用于退出脚本执行
 })()
 
 function Env(name, opts) {
@@ -1073,3 +1075,31 @@ function Env(name, opts) {
         }
     })(name, opts)
 }
+
+
+// ```userInfo
+// roomID:xxxxxx,
+// uid:xxxxxx,
+// uname:xxxxxx,
+// face:http://xxxxx.jpg,
+// roomTitle:xxxxxx,
+// liveStatus,
+// orderID:123
+// roomInfo
+// {
+//     "up_name": body.data.description,
+//     "roomID": roomID,
+//     "live_status": body.data.live_status,
+//     "uid": body.data.uid,
+//     "room_title": body.data.title
+// }
+// userInfo
+// {
+//     roomID:xxxxxx,
+//     uid:xxxxxx,
+//     uname:xxxxxx,
+//     face:http://xxxxx.jpg,
+//     roomTitle:xxxxxx,
+//     liveStatus,
+//     orderID:123
+// }
