@@ -47,21 +47,29 @@
             ]
         },
         {
-            "id": "Bili.Advanced.Live.Settings.Background",
-            "name": "B站直播间背景设置",
+            "id": "Bili.Advanced.Live.Settings",
+            "name": "B站直播间设置",
             "keys": [
-                "@Bili.Advanced.Live.Settings.Background"
+                "@Bili.Advanced.Live.Settings.Background",
+                "@Bili.Advanced.Live.Settings.MoreLive"
             ],
             "descs_html": [
-                "<h4 align=\"center\">直播间背景设置</h4>"
+                "<h4 align=\"center\">直播间设置</h4>"
             ],
             "settings": [
                 {
                     "id": "@Bili.Advanced.Live.Settings.Background",
-                    "name": "背景图片地址",
+                    "name": "设置直播间背景图片",
                     "val": "",
                     "type": "text",
                     "desc": "请输入能访问的，且大小符合手机大小的图片的地址。"
+                },
+                {
+                    "id": "@Bili.Advanced.Live.Settings.MoreLive",
+                    "name": "开关更多直播按钮",
+                    "val": "",
+                    "type": "boolean",
+                    "desc": "是否打开更多直播按钮"
                 }
             ],
             "author": "@IrisW",
