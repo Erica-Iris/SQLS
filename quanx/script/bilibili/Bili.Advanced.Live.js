@@ -1,185 +1,221 @@
-const $ = new Env("B站直播间净化 v0.0.66");
+const $ = new Env("B站直播间净化 v0.0.116");
+/**
+ * userInfo
+ * {
+ * "face": "http://xxxxx.jpg",
+ * "uname": "xxxxxxxxx"
+ * }
+ */
+/**
+ * roomInfo
+ * {
+ * "roomID": roomID,
+ * "live_status": body.data.live_status,
+ * "room_title": body.data.title
+ * }
+ */
+/**
+ * cardInfo
+ * {
+ * orderID:123,
+ * roomID:xxxxxx,
+ * roomTitle:xxxxxx,
+ * liveStatus:1,
+ * uid:xxxxxx,
+ * uname:xxxxxx,
+ * face:http://xxxxx.jpg,
+ * }
+ */
 
+(async function () { // 立即运行的匿名异步函数
+    let respBody = JSON.parse($response.body)
 
-function build_userInfo(roomInfo, userInfo, orderID) {
+    const setting_ = $.getdata("@Bili.Advanced.Live.Settings")
+    const cardCaches = $.getjson("@Bili.Advanced.Live.Caches")
+    const IDs = $.getdata("@Bili.Advanced.Live.card")
+    const results = [];
+
+    // 如果未获取到设置,设置为默认
+    if (!setting_) {
+        $.log("未获取到设置,设置为默认")
+        $.setdata(JSON.stringify(defaultSettings), "@Bili.Advanced.Live.Settings")
+        setting_ = defaultSettings
+    } else {
+        if (Boolean(setting_.close_more_live) == true) {
+            $.log("关闭更多直播间按钮")
+            respBody.data.more_live_tag = {}
+        }
+    }
+
+    // 如果未获取到卡片缓存,设置为空数组
+    if (!cardCaches) {
+        $.log("\n🔴未获取到卡片缓存")
+        $.setdata(JSON.stringify([]), "@Bili.Advanced.Live.Caches")
+        cardCaches = []
+    }
+
+    const promises = Object.keys(IDs).map(async (ID, index) => {
+        try {
+            // 判断缓存数组中的每一项对象的ID是否能匹配当前的ID
+            // 如果不能匹配就去获取信息，如果匹配成功则直接获取cardinfo
+            // 缓存的格式是[{cardInfo},{cardInfo},{cardInfo}]
+            const cacheIndex = cardCaches.findIndex(cache => {
+                return cache.roomID == IDs[ID] || cache.short_id == IDs[ID]
+            });
+            if (cacheIndex != -1) {
+                $.log(`\n🟢从缓存中获取到直播间: ${cardCaches[cacheIndex].roomID},标题是: ${cardCaches[cacheIndex].roomTitle}`)
+                results.push(cardCaches[cacheIndex])
+                return cardCaches[cacheIndex]
+            } else {
+                $.log(`\n🔴未获取到缓存,开始获取直播间: ${IDs[ID]}`)
+                const roomInfo = await abc(roomInfoT, `https://api.live.bilibili.com/room/v1/Room/get_info?room_id=${IDs[ID]}`);
+                const userInfo = await abc(userInfoT, `https://api.live.bilibili.com/live_user/v1/Master/info?uid=${roomInfo.uid}`);
+                const cardInfo = buildCardInfo(roomInfo, userInfo, index)
+                $.log(`\n🟢成功获取到直播间: ${cardInfo.roomID},标题是: ${cardInfo.roomTitle}`)
+                results.push(cardInfo)
+                cardCaches.push(cardInfo)
+                $.log(`\n🟢成功添加到缓存: ${cardInfo.roomID}`)
+                return cardInfo
+            }
+        } catch (error) {
+            console.error(`\n🔴获取直播间 ${IDs[ID]} 失败: \n${error.message}`);
+        }
+    });
+
+    await Promise.all(promises)
+        .then(() => {
+            console.log(`\n🟢所有直播间卡片获取完毕, 共 ${results.length} 个`);
+        })
+        .catch(error => {
+            console.error('\n🔴获取出错: \n', error);
+        });
+
+    results.forEach(cardInfo => {
+        base_multi_view.relation_view.push(build_multi_view_data(cardInfo))
+    })
+
+    if (cardCaches) {
+        $.setjson(cardCaches, "@Bili.Advanced.Live.Caches")
+    } else {
+        $.log("未获取到缓存")
+        $.setdata(JSON.stringify([]), "@Bili.Advanced.Live.Caches")
+    }
+
+    respBody.data.multi_view_info = base_multi_view
+    $.log("\n🟢关闭右下角贴片广告")
+    // respBody.data.show_reserve_status = false
+    $.log("\n🟢关闭预约banner")
+    respBody.data.reserve_info.show_reserve_status = false
+    $.log("\n🟢关闭活动banner")
+    respBody.data.activity_banner_info.pendant_banner = []
+    $.log("\n🟢删除弹幕框的提示词")
+    respBody.data.room_config_info.dm_text = ""
+    respBody.data.room_config_info.post_panel.click_button.landscape_text[0] = ""
+    respBody.data.room_config_info.post_panel.click_button.portrait_text[0] = ""
+    // respBody.data.xtemplate_config.dm_emoticon_info.is_open_emoticon = 0//关闭表情输入
+    respBody.data.xtemplate_config.dm_emoticon_info.is_shield_emoticon = 1
+    respBody.data.xtemplate_config.dm_brush_info.landScape.is_hide_anti_brush = 1
+    $.done({ body: JSON.stringify(respBody) })
+})()
+const defaultSettings = {
+    app_background: "",
+    close_more_live: false,
+    close_help_me_play_outer: false,
+    close_follow_card: false
+}
+const base_multi_view = {
+    "bg_image": "https://i0.hdslb.com/bfs/live/edaa9477a1d8325dd0c36c419b6fd5f9646b2419.png",
+    "copy_writing": "切换其他主播", // 展开按钮上的字
+    "gather_room_list": [],         // 放合集的
+    "relation_view": [],
+    "room_id": 12812111,            // 所有直播的集合页面的ID，和直播ID一样可以直接访问，但是似乎没用
+    "room_list": [],                // 作用未知
+    "sub_bg_color": "#57b632a5",    // 作用未知
+    "sub_slt_color": "#ff0000dd",   // 作用未知
+    "sub_text_color": "#007bffd9",  // 作用未知
+    "title": "吃鸡直播",            // 作用不明
+    "view_pattern": 1,              // 作用不明
+    "view_type": 0                  // 默认展开还是收起
+}
+function buildCardInfo(roomInfo, userInfo, orderID) {
     return {
         "orderID": orderID,
         "roomID": roomInfo.roomID,
+        "short_id": roomInfo.short_id,
         "roomTitle": roomInfo.roomTitle,
+        "roomCover": roomInfo.cover,
         "liveStatus": roomInfo.liveStatus,
         "uid": roomInfo.uid,
         "uname": userInfo.uname,
         "face": userInfo.face,
+        "timestamp": Date.now()
     }
 }
-function GetUserInfo(uid) {
+function abc(infoType, url) {
     const userInfo = {
-        url: `https://api.live.bilibili.com/live_user/v1/Master/info?uid=${uid}`,
+        url: url,
         headers: {
             'User-Agent': 'bili-inter/77500100 CFNetwork/1.0 Darwin/23.5.0 os/ios model/iPhone 13 mini mobi_app/iphone_i build/77500100 osVer/17.5.1 network/2 channel/AppStore'
         },
         method: "GET"
     }
     return new Promise((resolve) => { //主函数返回Promise实例对象, 以便后续调用时可以实现顺序执行异步函数
-        $.post(userInfo, (error, resp, data) => { //使用post请求查询, 再使用回调函数处理返回的结果
+        $.post(userInfo, (error, resp, data) => {
             try { //使用try方法捕获可能出现的代码异常
                 if (error) {
-                    throw new Error(error); //如果请求失败, 例如无法联网, 则抛出一个异常
-                } else {
-                    const body = JSON.parse(data); //解析响应体json并转化为对象
-                    if (body.code === 0 && body.data) { //如果响应体为预期格式
-                        return resolve({
-                            "face": body.data.info.face,
-                            "uname": body.data.info.uname
-                        })
-                    } else { //否则抛出一个异常
-                        throw new Error(body.msg || data);
-                    }
-                }
-            } catch (e) { //接住try代码块中抛出的异常, 并打印日志
-                console.log(`\n获取头像: 失败\n出现错误: ${e.message}`);
-            } finally { //finally语句在try和catch之后无论有无异常都会执行
-                resolve(face); //异步操作成功时调用, 将Promise对象的状态标记为"成功", 表示已完成查询积分
-            }
-        })
-    })
-}
-function GetLiveRoomTitleAndStatus(roomID) {
-    const userInfo = {
-        url: `https://api.live.bilibili.com/room/v1/Room/get_info?room_id=${roomID}`,
-        headers: {
-            'User-Agent': 'bili-inter/77500100 CFNetwork/1.0 Darwin/23.5.0 os/ios model/iPhone 13 mini mobi_app/iphone_i build/77500100 osVer/17.5.1 network/2 channel/AppStore'
-        },
-        method: "GET"
-    }
-    return new Promise((resolve) => { //主函数返回Promise实例对象, 以便后续调用时可以实现顺序执行异步函数
-        $.post(userInfo, (error, resp, data) => { //使用post请求查询, 再使用回调函数处理返回的结果
-            try { //使用try方法捕获可能出现的代码异常
-                if (error) {
-                    throw new Error(error); //如果请求失败, 例如无法联网, 则抛出一个异常
+                    throw new Error(error);
                 } else {
                     const body = JSON.parse(data);
                     if (body.code == 0 && body.data) {
-                        return resolve({
-                            "roomID": roomID,
-                            "liveStatus": body.data.live_status,
-                            "uid": body.data.uid,
-                            "roomTitle": body.data.title
-                        });
-                    } else { //否则抛出一个异常
+                        $.log("成功获取到信息")
+                        return resolve(infoType(body));
+                    } else {
                         throw new Error(body.msg || data);
                     }
                 }
-            } catch (e) { //接住try代码块中抛出的异常, 并打印日志
-                console.log(`\n获取直播间信息失败\n出现错误: ${e.message}`);
-            } finally { //finally语句在try和catch之后无论有无异常都会执行
-                resolve({
-                    "up_name": "获取失败",
-                    "live_status": 0,
-                    "uid": 0,
-                    "room_title": "获取失败"
-                });
+            } catch (e) {
+                console.log(`\n获取失败\n出现错误: ${e.message}`);
+            } finally {
             }
         })
     })
 }
-const base_multi_view = {
-    "bg_image": "https://i0.hdslb.com/bfs/live/edaa9477a1d8325dd0c36c419b6fd5f9646b2419.png",
-    "copy_writing": "切换其他主播",
-    "gather_room_list": [
-    ],
-    "relation_view": [
-
-    ],
-    "room_id": 12812111,
-    "room_list": [],//作用未知
-    "sub_bg_color": "#9c9c9c1d",
-    "sub_slt_color": "#ffffff22",
-    "sub_text_color": "#ffffff1b",
-    "title": "吃鸡直播",
-    "view_pattern": 1,
-    "view_type": 1
-}
-function build_multi_view_data(userInfo) {
+const roomInfoT = (body) => ({
+    "roomID": body.data.room_id,
+    "short_id": body.data.short_id,//直播间短号
+    "liveStatus": body.data.live_status,
+    "uid": body.data.uid,
+    "roomTitle": body.data.title,
+    "cover": body.data.user_cover
+});
+const userInfoT = (body) => ({
+    "face": body.data.info.face,
+    "uname": body.data.info.uname
+})
+function build_multi_view_data(cardInfo) {
     return {
-        "anchor_face": userInfo.face,
-        "cover": "",
+        "anchor_face": cardInfo.face,
+        "cover": cardInfo.roomCover,
         "duration": 0,
         "gather_id": 0,
-        "jump_url": `https://live.bilibili.com/${userInfo.roomID}`,
-        "live_status": userInfo.liveStatus,
+        "jump_url": `https://live.bilibili.com/${cardInfo.roomID}`,
+        "live_status": cardInfo.liveStatus,
         "match_info": null,                 //展示赛事信息
         "match_live_room": false,
         "num": 999999,                      //热度
-        "order_id": userInfo.orderID,       //横着的列表中第几个
+        "order_id": cardInfo.orderID,       //横着的列表中第几个
         "pub_date": "",
         "switch": false,//作用未知
         "text_small": "99.9万",
-        "title": userInfo.roomTitle,        //最上面的直播间名字
+        "title": cardInfo.roomTitle,        //最上面的直播间名字
         "up_name": "",
         "use_view_vt": false,               //竖屏直播
-        "view_id": userInfo.roomID,         //用来高亮当前直播间
-        "view_name": userInfo.uname,        //头像边的直播间名字，横屏的小字
+        "view_id": cardInfo.roomID,         //用来高亮当前直播间
+        "view_name": cardInfo.uname,        //头像边的直播间名字，横屏的小字
         "view_type": 0,                     //0是直播间，1是精彩合集
         "watch_icon": "https://i0.hdslb.com/bfs/live/0b265af1af0a77abc47aa3b8f1a5c0769d8bd23b.png"
     }
 }
-
-
-(async function () { // 立即运行的匿名异步函数
-    // 使用await关键字声明, 表示以同步方式执行异步函数, 可以简单理解为顺序执行
-
-    let respBody = JSON.parse($response.body)
-    // 获取数据和设置以及缓存的数据
-    const card = $.getdata("@Bili.Advanced.Live.card")
-    const cached_user_info = $.getdata("@Bili.Advanced.Live.card.Caches")
-
-
-    const firstID = card.firstID
-    const secID = card.secID
-    $.log("获取到", firstID, secID)
-
-    let firstUser = {}
-    let secUser = {}
-
-    cached_user_info.users.forEach(user => {
-        $.log(user.roomID)
-    })
-
-    $.log(firstUser == {})
-    $.log(secUser == {})
-
-
-    // let a = await GetLiveRoomTitleAndStatus(firstID)
-    // let b = await GetUserInfo(a.uid)
-    // const firstUser = build_userInfo(a, b, 1)
-    //
-    // let c = await GetLiveRoomTitleAndStatus(secID)
-    // let d = await GetUserInfo(c.uid)
-    // const secUser = build_userInfo(c, d, 2)
-    //
-    // let firstCard = build_multi_view_data(firstUser)
-    // let secCard = build_multi_view_data(secUser)
-    // base_multi_view.relation_view.push(firstCard)
-    // base_multi_view.relation_view.push(secCard)
-    //
-    //
-    // // 设置多视图信息
-    // respBody.data.multi_view_info = base_multi_view
-    //
-    // // 在获取到背景图片地址后进行后续操作
-    // if (background_image_url) {
-    //     respBody.data.room_info.app_background = background_image_url
-    // } else {
-    //     $.log("未获取到背景图片地址")
-    // }
-    //
-    // if (moreliveSwitch) {
-    //     respBody.data.more_live_tag.is_show = false
-    // }
-    // $.log(moreliveSwitch)
-    $.done({ body: JSON.stringify(respBody) }) //完成后调用QX内部特有的函数, 用于退出脚本执行
-})()
 
 function Env(name, opts) {
     class Http {
@@ -1075,31 +1111,3 @@ function Env(name, opts) {
         }
     })(name, opts)
 }
-
-
-// ```userInfo
-// roomID:xxxxxx,
-// uid:xxxxxx,
-// uname:xxxxxx,
-// face:http://xxxxx.jpg,
-// roomTitle:xxxxxx,
-// liveStatus,
-// orderID:123
-// roomInfo
-// {
-//     "up_name": body.data.description,
-//     "roomID": roomID,
-//     "live_status": body.data.live_status,
-//     "uid": body.data.uid,
-//     "room_title": body.data.title
-// }
-// userInfo
-// {
-//     roomID:xxxxxx,
-//     uid:xxxxxx,
-//     uname:xxxxxx,
-//     face:http://xxxxx.jpg,
-//     roomTitle:xxxxxx,
-//     liveStatus,
-//     orderID:123
-// }
