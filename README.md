@@ -8,7 +8,7 @@
 
 #### 安装
 
-点击一键安装: [Bili.Advanced.snippet](http://boxjs.com/#/sub/add/https%3A%2F%2Fraw.githubusercontent.com%2FErica-Iris%2FSQLS%2Fmain%2Fquanx%2Frewrite%2FBili.Advanced.snippet "一键安装")
+点击一键安装: [Bili.Advanced.snippet](http://boxjs.com/#/sub/add/https%3A%2F%2Fgithub.com%2FErica-Iris%2FSQLS%2Fblob%2Fmain%2Fboxjs%2FBili.Advanced.json "一键安装")
 
 #### 实现功能
 
