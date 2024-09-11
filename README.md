@@ -6,6 +6,10 @@
 
 ### B 站自定义
 
+#### 安装
+
+点击一键安装: [Bili.Advanced.snippet](http://boxjs.com/#/sub/add/https%3A%2F%2Fraw.githubusercontent.com%2FErica-Iris%2FSQLS%2Fmain%2Fquanx%2Frewrite%2FBili.Advanced.snippet "一键安装")
+
 #### 实现功能
 
 - [x] 自定义直播间背景

@@ -4,20 +4,14 @@
 
 # Proto 动态广告,后台播放限制,播放页广告 //app.bilibili.com
 
-
-
 # 对直播间页面进行修改（关闭按钮、弹幕框、点赞、送礼）
 
 ^https:\/\/api\.live\.bilibili\.com\/xlive\/app-room\/v1\/index\/getInfoByRoom\? url script-response-body https://raw.githubusercontent.com/Erica-Iris/SQLS/main/quanx/script/bilibili/Bili.Advanced.Live.js
 
 # 添加删除卡片操作
+
 ^http:\/\/add\.card\/[a-zA-Z0-9]+\? url script-echo-response https://raw.githubusercontent.com/Erica-Iris/SQLS/main/quanx/script/bilibili/Bili.Advanced.Live.Card.js
 ^http:\/\/remove\.card\/[a-zA-Z0-9]+\? url script-echo-response https://raw.githubusercontent.com/Erica-Iris/SQLS/main/quanx/script/bilibili/Bili.Advanced.Live.Card.js
-
-
-
-
-
 
 # 删除除了预言外的守护圣殿等没用东西
 
