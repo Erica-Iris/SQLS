@@ -24,13 +24,14 @@
 
 #### 使用
 
-![添加卡片功能](./assets/添加卡片.PNG "添加卡片")
 
-![添加卡片成功](./assets/添加卡片成功.PNG "添加卡片成功")
+<div style="display: flex; justify-content: space-between;">
+    <img src="./assets/添加卡片.PNG" alt="添加卡片功能" style="width: 24%;"/>
+    <img src="./assets/添加卡片成功.PNG" alt="添加卡片成功" style="width: 24%;"/>
+    <img src="./assets/移除卡片.PNG" alt="移除卡片" style="width: 24%;"/>
+    <img src="./assets/移除卡片成功.PNG" alt="移除卡片成功" style="width: 24%;"/>
+</div>
 
-![移除卡片](./assets/移除卡片.PNG "移除卡片")
-
-![移除卡片成功](./assets/移除卡片成功.PNG "移除卡片成功")
 
 ## 参考文献
 
