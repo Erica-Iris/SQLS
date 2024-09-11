@@ -44,3 +44,7 @@
 ## 引用资源
 
 [Orz-3/mini](https://github.com/Orz-3/mini)
+
+## 阿巴阿巴
+
+![](https://profile-counter.glitch.me/SQLS/count.svg)
