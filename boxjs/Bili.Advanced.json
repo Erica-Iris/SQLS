@@ -17,10 +17,13 @@
             "id": "Bili.Advanced.Live",
             "name": "Bilibili Live Enhanced",
             "keys": [
-                "@Bili.Advanced.Live.card"
+                "@Bili.Advanced.Live.card",
+                "@Bili.Advanced.Live.Caches",
+                "@Bili.Advanced.Live.Cards"
             ],
             "descs_html": [
-                "<h4 align=\"center\">Bilibili Live Enhanced</h4>"
+                "<h4 align=\"center\">Bilibili Live Enhanced</h4>",
+                "<h4 align=\"center\">直播间设置</h4>"
             ],
             "settings": [
                 {
@@ -36,6 +39,20 @@
                     "val": "",
                     "type": "text",
                     "desc": "请输入需要关联的第二个ID"
+                },
+                {
+                    "id": "@Bili.Advanced.Live.card.thirdID",
+                    "name": "关联的第三个ID",
+                    "val": "",
+                    "type": "text",
+                    "desc": "请输入需要关联的第三个ID"
+                },
+                {
+                    "id": "@Bili.Advanced.Live.card.fourthID",
+                    "name": "关联的第四个ID",
+                    "val": "",
+                    "type": "text",
+                    "desc": "请输入需要关联的第四个ID"
                 }
             ],
             "author": "@IrisW",
@@ -48,46 +65,39 @@
             "id": "Bili.Advanced.Live.Settings",
             "name": "B站直播间设置",
             "keys": [
-                "@Bili.Advanced.Live.Settings",
-                "@Bili.Advanced.Live.Cache"
+                "@Bili.Advanced.Live.Settings"
             ],
             "descs_html": [
                 "<h4 align=\"center\">直播间设置</h4>"
             ],
             "settings": [
                 {
-                    "id": "@Bili.Advanced.Live.Settings.Background",
+                    "id": "@Bili.Advanced.Live.Settings.app_background",
                     "name": "设置直播间背景图片",
-                    "val": "",
+                    "val": "http://i0.hdslb.com/bfs/live/88bbfa155d3716d3be89135c4f6374b22570a858.jpg",
                     "type": "text",
                     "desc": "请输入能访问的，且大小符合手机大小的图片的地址。"
                 },
                 {
-                    "id": "@Bili.Advanced.Live.Settings.MoreLive",
+                    "id": "@Bili.Advanced.Live.Settings.close_more_live",
                     "name": "关闭更多直播按钮",
-                    "val": "",
+                    "val": false,
                     "type": "boolean",
                     "desc": "是否关闭更多直播按钮"
                 },
                 {
-                    "id": "@BiliBili.Enhanced.Settings.Home.Tab",
-                    "name": "首页: 标签页",
-                    "val": [
-                        "关闭更多直播",
-                        "关闭礼物按钮"
-                    ],
-                    "type": "checkboxes",
-                    "items": [
-                        {
-                            "key": "关闭更多直播",
-                            "label": "更多直播按钮"
-                        },
-                        {
-                            "key": "关闭礼物按钮",
-                            "label": "礼物按钮"
-                        }
-                    ],
-                    "desc": "功能开关"
+                    "id": "@Bili.Advanced.Live.Settings.close_follow_card",
+                    "name": "关闭关注主播卡片",
+                    "val": true,
+                    "type": "boolean",
+                    "desc": "是否关闭关注主播卡片"
+                },
+                {
+                    "id": "@Bili.Advanced.Live.Settings.close_help_me_play_outer",
+                    "name": "关闭帮我玩卡片",
+                    "val": false,
+                    "type": "boolean",
+                    "desc": "是否关闭帮我玩卡片"
                 }
             ],
             "author": "@IrisW",
