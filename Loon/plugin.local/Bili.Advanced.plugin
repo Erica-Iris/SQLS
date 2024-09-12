@@ -1,0 +1,17 @@
+#!name=BiliBili Advanced
+#!desc=更加自定义的哔哩哔哩
+#!openUrl=http://boxjs.com/#/app/BiliBili.Advanced
+#!author=IrisW
+#!homepage=https://github.com/Erica-Iris/SQLS
+#!manual=https://github.com/Erica-Iris/SQLS
+#!icon=https://github.com/BiliUniverse/Enhanced/raw/main/src/assets/icon_rounded.png
+#!category=BiliBili
+
+[Script]
+http-response ^https:\/\/api\.live\.bilibili\.com\/xlive\/app-room\/v1\/index\/getInfoByRoom\? requires-body=1, script-path=http://192.168.1.5:8000/quanx/script/bilibili.local/Bili.Advanced.Live.js, tag=BiliBili.Advanced, argument=
+http-response ^https:\/\/api\.live\.bilibili\.com\/xlive\/app-room\/v2\/index\/getRoomPlayInfo\? requires-body=1, script-path=http://192.168.1.5:8000/quanx/script/bilibili.local/Bili.Advanced.Live.Default.js, tag=BiliBili.Advanced, argument=
+http-response ^https:\/\/api\.live\.bilibili\.com\/xlive\/app-interface\/v2\/index\/feed\? requires-body=1, script-path=http://192.168.1.5:8000/quanx/script/bilibili.local/Bili.Advanced.Live.Feed.js, tag=BiliBili.Advanced, argument=
+http-response ^https:\/\/api\.live\.bilibili\.com\/xlive\/app-room\/v1\/index\/getInfoByUser\? requires-body=1, script-path=http://192.168.1.5:8000/quanx/script/bilibili.local/Bili.Advanced.Live.User.js, tag=BiliBili.Advanced, argument=
+http-response ^https:\/\/api\.live\.bilibili\.com\/xlive\/app-interface\/v2\/room\/recList\? requires-body=1, script-path=http://192.168.1.5:8000/quanx/script/bilibili.local/Bili.Advanced.Live.recList.js, tag=BiliBili.Advanced, argument=
+[MitM]
+hostname = app.bilibili.com, app.biliapi.net

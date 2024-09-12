@@ -8,7 +8,7 @@
 
 #### 安装
 
-一键安装: [Bili Live](http://boxjs.com/#/sub/add/https%3A%2F%2Fgithub.com%2FErica-Iris%2FSQLS%2Fraw%2Fmain%2Fboxjs%2FBili.Advanced.json "Bili Live")
+quanx、Loon 一键安装: [Bili Live](http://boxjs.com/#/sub/add/https%3A%2F%2Fgithub.com%2FErica-Iris%2FSQLS%2Fraw%2Fmain%2Fboxjs%2FBili.Advanced.json "Bili Live")
 
 #### 实现功能
 
@@ -24,14 +24,12 @@
 
 #### 使用
 
-
 <div style="display: flex; justify-content: space-between;">
     <img src="./assets/添加卡片.PNG" alt="添加卡片功能" style="width: 24%;"/>
     <img src="./assets/添加卡片成功.PNG" alt="添加卡片成功" style="width: 24%;"/>
     <img src="./assets/移除卡片.PNG" alt="移除卡片" style="width: 24%;"/>
     <img src="./assets/移除卡片成功.PNG" alt="移除卡片成功" style="width: 24%;"/>
 </div>
-
 
 ## 参考文献
 
