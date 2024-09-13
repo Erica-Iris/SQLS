@@ -8,26 +8,39 @@ const $ = new Env("设置默认画质");
 (async function () {
   let respBody = JSON.parse($response.body)
   deleteLowQualityStream(respBody)
+  changeLiveStatus(respBody)
+  $.done({ body: JSON.stringify(respBody) })
 })()
 
 function deleteLowQualityStream(respBody) {
   if (respBody.data?.playurl_info?.playurl?.stream) {
     respBody.data.playurl_info.playurl.stream.forEach(item => {
-      // 过滤qn不是10000
       if (item.format) {
         item.format.forEach(itema => {
           if (itema.codec) {
-            itema.codec.filter(itemb => {
-              itemb.current_qn = 10000
-            })
+            // 修正：将过滤后的结果赋值回 itema.codec
+            itema.codec = itema.codec.filter(itemb => itemb.current_qn == 10000);
           }
-        })
+        });
       }
-    })
-
+    });
   }
   $.log("\n🟢已经删除低分辨率数据流")
-  $.done({ body: JSON.stringify(respBody) })
+}
+
+function changeLiveStatus(respBody) {
+  const cardCaches = $.getjson("@Bili.Advanced.Live.Caches")
+  const roomID = respBody.data.room_id
+  const liveStatus = respBody.data.live_status
+  // 更新直播间状态
+  const cacheIndex = cardCaches.findIndex(card => {
+    return card.roomID == roomID || card.short_id == roomID
+  });
+  if (cacheIndex != -1 && cardCaches[cacheIndex].liveStatus != liveStatus) {
+    $.log(`\n🟢更新直播间 ${cardCaches[cacheIndex].roomID} 状态: ${(liveStatus == 1) ? '开播' : '未开播'}`)
+    cardCaches[cacheIndex].liveStatus = liveStatus
+    $.setjson(cardCaches, "@Bili.Advanced.Live.Caches")
+  }
 }
 
 function Env(name, opts) {

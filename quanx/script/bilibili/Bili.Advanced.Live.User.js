@@ -1,95 +1,118 @@
-const $ = new Env("测试feed");
-let respBody = JSON.parse($response.body)
-a()
-$.log("开始替换成原画")
-respBody.data.card_list.forEach(card => {
-  if (card.card_type == "small_card_v1") {
-    if (card.card_data.small_card_v1.accept_quality.includes(10000)) {
-      card.card_data.small_card_v1.current_quality = 10000
-      card.card_data.small_card_v1.current_qn = 10000
-      const roomID = card.card_data.small_card_v1.link.match(/\/(\d+)\?/)[1];
-      card.card_data.small_card_v1.link = `bilibili://live/${roomID}`
-    }
-  }
-  if (card.card_type == "my_idol_v1") {
-    card.card_data.my_idol_v1.list.forEach(aaa => {
-      aaa.current_qn = 10000
-      aaa.current_quality = 10000
-      const roomID = aaa.link.match(/\/(\d+)\?/)[1];
-      aaa.link = `bilibili://live/${roomID}`
-      aaa.official_verify = -1
-      aaa.play_url = ""
-      aaa.play_url_h265 = ""
-      aaa.session_id = ""
-    })
-  }
-  if (card.card_type == "banner_v1") {
-    card.card_data = {}
-  }
-})
+const $ = new Env("测试用户v0.0.1")
+let respBody = JSON.parse($response.body);
+
+
+(async () => {
+
+  a()
+
+  $.done({ body: JSON.stringify(respBody) })
+})()
+
 function a() {
-  // if (!$response.body) $done({});
-  // let obj = JSON.parse($response.body);
-  const qnDayColorMap = {
-    80: "#FF6F61",
-    150: "#FFA07A",
-    250: "#FFD700",
-    10000: "#98FB98"
-  };
-  const qnColorMap = {
-    80: "#8B0000",
-    150: "#CD5C5C",
-    250: "#DAA520",
-    10000: "#2E8B57"
-  };
-  const qnTextMap = {
-    80: "流畅",
-    150: "高清",
-    250: "超清",
-    10000: "原画"
-  };
-  const categoriesToFilter = ["交友", "聊天电台", "崩坏：星穹铁道", "王者荣耀", "守望先锋", "男声电台", "萌宅领域", "唱见电台", "蔚蓝档案", "英雄联盟", "鸣潮"];
-
-  function filterCardsByCategory(card_list, categories) {
-    if (!card_list) { return []; }
-
-    return card_list.filter(card => {
-      const areaName = card.card_data?.small_card_v1?.area_name;
-      return !categories.includes(areaName);
-    });
+  respBody.data.privilege = {
+    "auto_renew": 0,
+    "buy_guard_notice": null,
+    "benefit_card": {
+      "delay": 0,
+      "id": 0,
+      "img": "",
+      "num": 0,
+      "title": ""
+    },
+    "expired_time": "",
+    "guard_type": 1,
+    "notice_status": 1,
+    "privilege_type": 1,
+    "privilege_uname_color": "#FFD700",
+    "renew_remind": null,
+    "target_id": 449704680,
+    "uid": 291814941
   }
-
-  respBody.data.card_list = filterCardsByCategory(respBody.data.card_list, categoriesToFilter)
-  respBody.data.card_list.forEach(card => {
-    if (card.card_data && card.card_data.small_card_v1) {
-      const smallCard = card.card_data.small_card_v1;
-
-      // 获取current_qn的值
-      const currentQn = smallCard.current_qn;
-      // 根据current_qn的值修改text_night_color
-      if (qnColorMap.hasOwnProperty(currentQn)) {
-        // 根据画质修改颜色
-        smallCard.subtitle_style.text_night_color = qnColorMap[currentQn];
-        smallCard.subtitle_style.text_color = qnDayColorMap[currentQn];
-        // 显示画质
-        smallCard.feed_tag.tag_text = qnTextMap[currentQn];
-      }
-      // 删除没用的埋点
-      smallCard.show_callback = "";
-      smallCard.click_callback = "";
-      // 删除预先获取的默认画质的播放链接
-      smallCard.play_url = "";
-      // 删除封面左上和右上的各种百舰等图标
-      smallCard.pendent_list = [];
-      // 隐藏反馈按钮
-      smallCard.is_hide_feedback = 1;
-
-    }
-  })
-  console.log("剩余: " + respBody.data.card_list.length + "条数据");
+  respBody.data.property = {
+    "bubble": 0,
+    "bubble_color": "#FFD700",
+    "bubble_id": 0,
+    "danmu": {
+      "color": 16777215,
+      "length": 40,
+      "mode": 1
+    },
+    "uname_color": ""
+  }
+  respBody.data.relation = {
+    "is_fans": true,
+    "is_followed": true,
+    "is_in_fansclub": false,
+    "is_official_followed": true
+  }
+  respBody.data.user_level = {
+    "color": 6406234,
+    "level": 35,
+    "next_level": 35
+  }
+  respBody.data.medal.curr_show = {
+    "color": 12478086,
+    "color_border": 12478086,
+    "color_end": 12478086,
+    "color_start": 12478086,
+    "guard_icon": "",
+    "guard_level": 0,
+    "honor_icon": "",
+    "id": 53500,
+    "is_light": 1,
+    "level": 31,
+    "name": "大能",
+    "ruid": 46708782,
+    "score": 62384,
+    "typ": 1,
+    "user_receive_count": 0,
+    "v2_medal_color_border": "#d0ff0099",
+    "v2_medal_color_end": "#C85DC499",
+    "v2_medal_color_level": "#59005699",
+    "v2_medal_color_start": "#C85DC499",
+    "v2_medal_color_text": "#9900ffff"
+  }
+  respBody.data.medal.curr_weared = {
+    "guard_level": 0,
+    "icon_id": 0,
+    "is_lighted": 1,
+    "level": 31,
+    "medal_color": 12478086,
+    "medal_color_border": 12478086,
+    "medal_color_end": 12478086,
+    "medal_color_start": 12478086,
+    "medal_name": "大能",
+    "score": 62384,
+    "target_id": 46708782
+  }
+  respBody.data.medal.lookup = {
+    "is_lighted": true,
+    "level": 100
+  }
+  respBody.data.medal.lookup_v2 = {
+    "color": 12478086,
+    "color_border": 12478086,
+    "color_end": 12478086,
+    "color_start": 12478086,
+    "guard_icon": "",
+    "guard_level": 0,
+    "honor_icon": "",
+    "id": 0,
+    "is_light": 1,
+    "level": 100,
+    "name": "大能",
+    "ruid": 46708782,
+    "score": 62384,
+    "typ": 0,
+    "user_receive_count": 0,
+    "v2_medal_color_border": "#919298CC",
+    "v2_medal_color_end": "#919298CC",
+    "v2_medal_color_level": "#6C6C7299",
+    "v2_medal_color_start": "#919298CC",
+    "v2_medal_color_text": "#FFFFFFFF"
+  }
 }
-
-$.done({ body: JSON.stringify(respBody) })
 function Env(name, opts) {
   class Http {
     constructor(env) {
