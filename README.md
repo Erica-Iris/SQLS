@@ -43,6 +43,10 @@ quanx、Loon 一键安装: [Bili Live](http://boxjs.com/#/sub/add/https%3A%2F%2F
 
 [Orz-3/mini](https://github.com/Orz-3/mini)
 
+## 留言
+
+[在这留言](https://github.com/Erica-Iris/SQLS/issues)
+
 ## 阿巴阿巴
 
 ![](https://profile-counter.glitch.me/SQLS/count.svg)
