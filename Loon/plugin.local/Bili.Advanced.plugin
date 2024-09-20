@@ -8,10 +8,10 @@
 #!category=BiliBili
 
 [Script]
-http-response ^https:\/\/api\.live\.bilibili\.com\/xlive\/app-room\/v1\/index\/getInfoByRoom\? requires-body=1, script-path=http://192.168.1.5:8000/quanx/script/bilibili.local/Bili.Advanced.Live.js, tag=BiliBili.Advanced, argument=
-http-response ^https:\/\/api\.live\.bilibili\.com\/xlive\/app-room\/v2\/index\/getRoomPlayInfo\? requires-body=1, script-path=http://192.168.1.5:8000/quanx/script/bilibili.local/Bili.Advanced.Live.Default.js, tag=BiliBili.Advanced, argument=
-http-response ^https:\/\/api\.live\.bilibili\.com\/xlive\/app-interface\/v2\/index\/feed\? requires-body=1, script-path=http://192.168.1.5:8000/quanx/script/bilibili.local/Bili.Advanced.Live.Feed.js, tag=BiliBili.Advanced, argument=
-http-response ^https:\/\/api\.live\.bilibili\.com\/xlive\/app-room\/v1\/index\/getInfoByUser\? requires-body=1, script-path=http://192.168.1.5:8000/quanx/script/bilibili.local/Bili.Advanced.Live.User.js, tag=BiliBili.Advanced, argument=
-http-response ^https:\/\/api\.live\.bilibili\.com\/xlive\/app-interface\/v2\/room\/recList\? requires-body=1, script-path=http://192.168.1.5:8000/quanx/script/bilibili.local/Bili.Advanced.Live.recList.js, tag=BiliBili.Advanced, argument=
+http-response ^https:\/\/api\.live\.bilibili\.com\/xlive\/app-room\/v1\/index\/getInfoByRoom\? requires-body=1, script-path=http://www.myserver.com/quanx/script/bilibili.local/Bili.Advanced.Live.js, tag=BiliBili.Advanced, argument=
+http-response ^https:\/\/api\.live\.bilibili\.com\/xlive\/app-room\/v2\/index\/getRoomPlayInfo\? requires-body=1, script-path=http://www.myserver.com/quanx/script/bilibili.local/Bili.Advanced.Live.Default.js, tag=BiliBili.Advanced, argument=
+http-response ^https:\/\/api\.live\.bilibili\.com\/xlive\/app-interface\/v2\/index\/feed\? requires-body=1, script-path=http://www.myserver.com/quanx/script/bilibili.local/Bili.Advanced.Live.Feed.js, tag=BiliBili.Advanced, argument=
+http-response ^https:\/\/api\.live\.bilibili\.com\/xlive\/app-room\/v1\/index\/getInfoByUser\? requires-body=1, script-path=http://www.myserver.com/quanx/script/bilibili.local/Bili.Advanced.Live.User.js, tag=BiliBili.Advanced, argument=
+http-response ^https:\/\/api\.live\.bilibili\.com\/xlive\/app-interface\/v2\/room\/recList\? requires-body=1, script-path=http://www.myserver.com/quanx/script/bilibili.local/Bili.Advanced.Live.recList.js, tag=BiliBili.Advanced, argument=
 [MitM]
 hostname = app.bilibili.com, app.biliapi.net
